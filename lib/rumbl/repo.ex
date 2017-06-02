@@ -18,7 +18,7 @@ defmodule Rumbl.Repo do
   def all(Rumbl.User) do
     [
       %Rumbl.User{id: "1", name: "Sharkey Anchorbottom", username: "sharkey", password: "nicole"},
-      %Rumbl.User{id: "2", name: "Sea Legs Swordskull", username: "sealegs", password: "gel"},
+      %Rumbl.User{id: "2", name: "Sea-Legs Swordskull", username: "sealegs", password: "gel"},
       %Rumbl.User{id: "3", name: "Gristle Rattlebones", username: "gristle", password: "naveed"},
       %Rumbl.User{id: "4", name: "Shudders Swindles", username: "shudders", password: "hannes"}
     ]
