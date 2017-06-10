@@ -16,6 +16,17 @@
     <nav class="light-blue">
       <div class="nav-wrapper container">
         <a href="/" class="brand-logo">Rumbl</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <%= if  @current_user do %>
+            <li><%= @current_user.username %></li>
+            <li>
+              <%= link "Log out", to: session_path(@conn, :delete, @current_user), method: "delete" %>
+            </li>
+          <% else %>
+            <li><%= link "Register", to: user_path(@conn, :new) %></li>
+            <li><%= link "Log in", to: session_path(@conn, :new) %></li>
+          <% end %>
+        </ul>
       </div>
     </nav>    
     
