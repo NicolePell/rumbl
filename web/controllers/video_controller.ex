@@ -83,7 +83,6 @@ defmodule Rumbl.VideoController do
     assoc(user, :videos)
   end
 
-
   defp load_categories(conn, _) do
     query = 
       Category
