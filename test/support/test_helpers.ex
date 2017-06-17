@@ -6,7 +6,7 @@ defmodule Rumbl.TestHelpers do
       name: "Sharkey Anchorbottom",
       username: "user#{Base.encode16(:crypto.strong_rand_bytes(8))}",
       password: "supersecret",
-    }, attrs)
+    }, Map.new(attrs))
 
     %Rumbl.User{}
     |> Rumbl.User.registration_changeset(changes)
