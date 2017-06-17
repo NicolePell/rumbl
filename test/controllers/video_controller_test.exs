@@ -16,19 +16,44 @@ defmodule Rumbl.VideoControllerTest do
     end
   end
 
-  test "requires user authentication on all actions", %{conn: conn} do
-    Enum.each([
-      get(conn, video_path(conn, :new)),
-      get(conn, video_path(conn, :index)),
-      get(conn, video_path(conn, :show, "123")),
-      get(conn, video_path(conn, :edit, "123")),
-      put(conn, video_path(conn, :update, "123", %{})),
-      post(conn, video_path(conn, :create, %{})),
-      delete(conn, video_path(conn, :delete, "123"))
-    ], fn conn -> 
-      assert html_response(conn, 302)
-      assert conn.halted
-    end)
+  describe "authorisation for video resources" do
+    test "requires user authentication on all actions", %{conn: conn} do
+      Enum.each([
+        get(conn, video_path(conn, :new)),
+        get(conn, video_path(conn, :index)),
+        get(conn, video_path(conn, :show, "123")),
+        get(conn, video_path(conn, :edit, "123")),
+        put(conn, video_path(conn, :update, "123", %{})),
+        post(conn, video_path(conn, :create, %{})),
+        delete(conn, video_path(conn, :delete, "123"))
+      ], fn conn -> 
+        assert html_response(conn, 302)
+        assert conn.halted
+      end)
+    end
+
+    @tag login_as: "sharkey"
+    test "authorizes actions against access by other users", %{user: owner, conn: conn} do
+      video = insert_video(owner, @valid_attrs)
+      non_owner = insert_user(username: "sneaky")
+      conn = assign(conn, :current_user, non_owner)
+
+      assert_error_sent :not_found, fn ->
+        get(conn, video_path(conn, :show, video))
+      end
+
+      assert_error_sent :not_found, fn ->
+        get(conn, video_path(conn, :edit, video))
+      end
+
+      assert_error_sent :not_found, fn ->
+        put(conn, video_path(conn, :update, video, video: @valid_attrs))
+      end
+
+      assert_error_sent :not_found, fn ->
+        delete(conn, video_path(conn, :delete, video))
+      end
+    end
   end
 
   @tag login_as: "sharkey"
