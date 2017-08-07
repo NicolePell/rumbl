@@ -19,6 +19,7 @@
         <ul id="nav-mobile" class="right hide-on-med-and-down">
           <%= if  @current_user do %>
             <li><%= @current_user.username %></li>
+            <li><%= link "My Videos", to: video_path(@conn, :index) %></li>
             <li>
               <%= link "Log out", to: session_path(@conn, :delete, @current_user), method: "delete" %>
             </li>
@@ -39,7 +40,7 @@
         <%= render @view_module, @view_template, assigns %>
       </main>
 
-    </div> <!-- /container -->
+    </div>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>
